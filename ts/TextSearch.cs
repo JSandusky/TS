@@ -63,6 +63,9 @@ namespace ts
                                     return;
                                 }
                             }
+
+                            if (args.CheckHits())
+                                goto SEARCH_END;
                         }
                     } while (hitIndex > -1);
                 }
@@ -72,6 +75,7 @@ namespace ts
                 current = dir.GetNext();
             }
 
+        SEARCH_END:
             ConsoleHelper.Fill();
             ConsoleHelper.WriteColor("complete", ConsoleColor.Green);
             args.WriteResults(dir);
