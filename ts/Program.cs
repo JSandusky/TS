@@ -34,11 +34,19 @@ namespace ts
         public int MaxBytes { get; set; } = (1024 * 1024) * 20; //20mb limit
         public string Query { get; set; }
         public bool CaseSensitive { get; set; } = false;
+    // Regular expressions
         public bool RegexMode { get; set; } = false;
         public bool WholeRegex { get; set; } = true;
+    // /x /X - xml xPath query
         public bool XmlMode { get; set; } = false;
+    // /t /T - `tell mode`
         public bool FileNamesOnly { get; set; } = false;
         public bool CountFileNames { get; set; } = false;
+    // `match` mode
+        public bool MatchOnly { get; set; } = false;
+        public bool UniqueOnly { get; set; } = false;
+        public bool ShowMatchFileName { get; set; } = false;
+    // General
         public bool Recurse { get; set; } = false;
         public int LineCount { get; set; } = 5;
         public bool Auto { get; set; } = false;
@@ -47,8 +55,18 @@ namespace ts
         public bool wrapInQuote = false;
         public string quickMode = null;
 
+        public int HitLimit { get; set; } = -1; // negative 1 for unlimited
         public int DataFileCount { get; set; } = 0;
         public int DataHitCount { get; set; } = 0;
+
+        /// <summary>
+        /// Check if we've hit our maximum allotted hits.
+        /// </summary>
+        /// <returns>True if it's been reached</returns>
+        public bool CheckHits()
+        {
+            return HitLimit > 0 && HitLimit >= DataHitCount;
+        }
 
         /// <summary>
         /// Dumps tail information about files and hit counts/
@@ -186,9 +204,13 @@ namespace ts
             {
                 if (System.IO.Directory.Exists(searchDirs[i]))
                     searchRoot.subDirs_.Add(new SearchDir(searchDirs[i], searchArgs));
+                else if (System.IO.File.Exists(searchDirs[i])) // add an explicit file
+                    searchRoot.files_.Add(new SearchFile(searchDirs[i]));
             }
 
-            if (searchArgs.BinaryMode != BinaryMode.None)
+            if (searchArgs.MatchOnly)
+                new MatchSearcher(searchArgs, searchRoot);
+            else if (searchArgs.BinaryMode != BinaryMode.None)
                 new BinarySearch(searchArgs, searchRoot);
             else if (searchArgs.RegexMode || searchArgs.quickMode != null) // Regex search must be before `TellSearch` because it has a `TellMode`
                 new RegexSearch(searchArgs, searchRoot);
@@ -220,6 +242,16 @@ namespace ts
                     inOnlyBlock = true;
                 if (lowerCaseArg.Equals("/e"))
                     inExcludeBlock = true;
+
+                // match mode
+                if (lowerCaseArg.Equals("/m"))
+                    searchArgs.MatchOnly = true;
+                if (lowerCaseArg.Equals("/mu"))
+                    searchArgs.MatchOnly = searchArgs.UniqueOnly = true;
+                if (lowerCaseArg.Equals("/mf"))
+                    searchArgs.MatchOnly = searchArgs.ShowMatchFileName = true;
+                if (lowerCaseArg.Equals("/muf"))
+                    searchArgs.MatchOnly = searchArgs.UniqueOnly = searchArgs.ShowMatchFileName = true;
 
                 if (args[i].Equals("/t"))
                     searchArgs.FileNamesOnly = true;
@@ -260,6 +292,15 @@ namespace ts
                         searchArgs.BinaryMode = BinaryMode.Double;
                     else
                         searchArgs.BinaryMode = BinaryMode.Any;
+                }
+
+                // Hit limits
+                if (lowerCaseArg.StartsWith("/hit"))
+                {
+                    string subStr = lowerCaseArg.Substring("/hit".Length);
+                    try {
+                        searchArgs.HitLimit = int.Parse(subStr);
+                    } catch { }
                 }
 
                 if (SpecialSearches.ContainsKey(lowerCaseArg))

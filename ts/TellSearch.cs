@@ -36,6 +36,9 @@ namespace ts
                 else if (count > 0)
                     Console.WriteLine("    " + current.path_);
 
+                if (args.CheckHits())
+                    goto SEARCH_END;
+
                 current.Done();
                 current = dir.GetNext();
             }
@@ -54,7 +57,9 @@ namespace ts
                     Console.WriteLine(string.Format("    {0} -> {1}", hit.Key, hit.Value));
             }
 
-            Console.WriteLine();
+        SEARCH_END:
+            ConsoleHelper.Fill();
+            ConsoleHelper.WriteColor("complete", ConsoleColor.Green);
             args.WriteResults(dir);
         }
     }

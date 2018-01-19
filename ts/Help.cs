@@ -14,7 +14,7 @@ namespace ts
             ConsoleHelper.WriteCoded("/2Text Search /0♦ /6Copyright 2007-2018 ♦ JSandusky");
             Console.WriteLine();
             ConsoleHelper.WriteCoded("    usage: /2optional /5required");
-            Console.WriteLine();
+            //Console.WriteLine();
             ConsoleHelper.WriteCoded("/3ts.exe /5<target_list> /2/[flags] /5<search_query>");
             Console.WriteLine();
             ConsoleHelper.WriteCoded("/3ts.exe /5AFolder AnotherFolder /2/c /str /5/\"My Search Text\"");
@@ -34,16 +34,19 @@ namespace ts
             List<string> switches = new List<string>();
 
             switches.Add("Switches:");
-            switches.Add("");
+            //switches.Add("");
             switches.Add("    /3/a /0= Automatic mode, doesn't wait for input");
             switches.Add("    /3/b/4[mode] /0= binary data search, reinterprets query as value");
             switches.Add("        /3/b /0= anything");
             switches.Add("        /3/bf /0= 32-bit floating point");
-            switches.Add("        /3/bu16 /0= unsigned short");
-            switches.Add("        /3/bu32 /0= unsigned int");
+            switches.Add("        /3/bu16 /bs16 /0= ushort, short");
+            switches.Add("        /3/bu32 /bs32 /0= uint, int");
             switches.Add("    /3/c /0= Case-sensitive");
             switches.Add("        default = case-insensitive");
             switches.Add("    /3/l /0= show line numbers header (max 99,999)");
+            switches.Add("    /3/m/4[u,f,uf] /0= output matches only");
+            switches.Add("        /1/mu/0 = unique only, /1/mf/0 = with filename");
+            switches.Add("        /1/muf/0 = unique + filename");
             switches.Add("    /3/r /0= query text is regex");
             switches.Add("    /3/s /0= resursive scan subdirectories");
             switches.Add("    /3/str /0= wrap search text in double-quote \"");
@@ -63,7 +66,7 @@ namespace ts
 
             List<string> codeHelpers = new List<string>();
             codeHelpers.Add("Code Helpers (case insensitive):");
-            codeHelpers.Add("");
+            //codeHelpers.Add("");
             codeHelpers.Add("    /3/#/0 = line starts with #");
             codeHelpers.Add("        macros #defs and markdown headers");
             codeHelpers.Add("    /3/instr/0 = contained within double quotes");

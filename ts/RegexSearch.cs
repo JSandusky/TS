@@ -68,6 +68,9 @@ namespace ts
                                         return;
                                     }
                                 }
+
+                                if (args.CheckHits())
+                                    goto SEARCH_END;
                             }
                         }
                     }
@@ -88,11 +91,12 @@ namespace ts
                         Console.WriteLine("    {0} -> {1}", thisFileHits, current.path_);
                 }
 
-                SKIP_TARGET:
+            SKIP_TARGET:
                 current.Done();
                 current = dir.GetNext();
             }
 
+        SEARCH_END:
             ConsoleHelper.Fill();
             ConsoleHelper.WriteColor("complete", ConsoleColor.Green);
             args.WriteResults(dir);
