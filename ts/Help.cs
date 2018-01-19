@@ -15,19 +15,19 @@ namespace ts
             Console.WriteLine();
             ConsoleHelper.WriteCoded("    usage: /2optional /5required");
             //Console.WriteLine();
-            ConsoleHelper.WriteCoded("/3ts.exe /5<target_list> /2/[flags] /5<search_query>");
+            ConsoleHelper.WriteCoded("/3ts /5<target_list> /2/[flags] /5<search_query>");
             Console.WriteLine();
-            ConsoleHelper.WriteCoded("/3ts.exe /5AFolder AnotherFolder /2/c /str /5/\"My Search Text\"");
+            ConsoleHelper.WriteCoded("/3ts /5AFolder AnotherFolder /2/c /str /5/\"My Search Text\"");
             Console.WriteLine("    Two folders wrapping search text in quotes");
-            ConsoleHelper.WriteCoded("/3ts.exe /5. /2/s /o cpp h /5GUID_VALUE");
+            ConsoleHelper.WriteCoded("/3ts /5. /2/s /o cpp h /5GUID_VALUE");
             Console.WriteLine("    Recurse from current directory, only checking *.cpp and *.h files");
-            ConsoleHelper.WriteCoded("/3ts.exe /5SubFolder /2/r /5([A-Z])\\w+");
+            ConsoleHelper.WriteCoded("/3ts /5SubFolder /2/r /5([A-Z])\\w+");
             Console.WriteLine("    Regex search on named folder");
-            ConsoleHelper.WriteCoded("/3ts.exe /5SubFolder /2/x /5////rotation");
+            ConsoleHelper.WriteCoded("/3ts /5SubFolder /2/x /5////rotation");
             Console.WriteLine("    XPath query");
-            ConsoleHelper.WriteCoded("/3ts.exe /2//config");
+            ConsoleHelper.WriteCoded("/3ts /2//config");
             ConsoleHelper.WriteWholeLine("    Show config help information");
-            ConsoleHelper.WriteCoded("/3ts.exe /2//viewdoc");
+            ConsoleHelper.WriteCoded("/3ts /2//viewdoc");
             ConsoleHelper.WriteWholeLine("    Show editor setup and search viewport action help");
             Console.WriteLine();
 
