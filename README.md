@@ -6,9 +6,16 @@ A windows console text search program similar to grep, but better. Scrolling sea
 
 ![regular results](vanilla.png)
 
-TS is feature packed with programming specific switches such as `/var`, `/ptr`, `/instr` and `/infunc` as well as the capability to use a config file to add custom switches for commonly used regular expressions or combinations of flags.
+TS is feature packed with programming specific switches such as `/var`, `/ptr`, `/instr` and `/infunc` as well as the capability to use a config file to add custom switches for commonly used regular expressions. These regexes will be System.String.Format'ed if they contain a {0} sequence to take the entered query parameter. If {0} is not contained in the regex then the regex is considered to be parameterless and can be used without entering query text (such as grabbing all email addresses from files in a directory, with `/mu` to only take the unique email addresses that's pretty useful).
 
-    # standard code search custom flag
+    # Nasty email ripping regex, doesn't require parameters
+    /email = ([\da-zA-Z_-]+)@([\da-zA-Z_-]+).([\da-zA-Z_-]{2,6})?
+    
+    # use as `ts . /s /mu /email` to grab all emails
+
+Custom switches can also just be a collection of switches:
+
+    # standard code search switches
     /code = /l /o cpp hpp c h cxx hxx cs
     
 TS also includes rudimentary binary file searching for reverse engineering or identifying offsets into blobs.
