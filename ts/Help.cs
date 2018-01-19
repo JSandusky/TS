@@ -43,6 +43,7 @@ namespace ts
             switches.Add("        /3/bu32 /0= unsigned int");
             switches.Add("    /3/c /0= Case-sensitive");
             switches.Add("        default = case-insensitive");
+            switches.Add("    /3/l /0= show line numbers header (max 99,999)");
             switches.Add("    /3/r /0= query text is regex");
             switches.Add("    /3/s /0= resursive scan subdirectories");
             switches.Add("    /3/str /0= wrap search text in double-quote \"");
