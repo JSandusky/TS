@@ -101,23 +101,23 @@ namespace ts
         static Dictionary<string, string> SpecialSearches = new Dictionary<string, string>
         {
             { "/#", // line starts with #
-                "(?i)\\s*(\\#).*(\\b\\w*{0}\\b)" },
+                "\\s*(\\#).*(\\b\\w*{0}\\b)" },
             { "/instr", // result contained in " "
-                "(?i)(\\\".*)(\\b\\w*{0}\\b).*(\\\")" },
+                "(\\\".*)(\\b\\w*{0}\\b).*(\\\")" },
             { "/infunc", // result contained in ( )
-                "(?i)(\\(.*)(\\b\\w*{0}\\b).*(\\))" },
+                "(\\(.*)(\\b\\w*{0}\\b).*(\\))" },
             { "/temp", // result contained in < >
-                "(?i)(<.*)(\\b\\w*{0}\\b).*(>)" },
+                "(<.*)(\\b\\w*{0}\\b).*(>)" },
             { "/var", // result left of . or ->
-                "(?i)((->)|(\\.))(\\b\\w*{0}\\b)" },
+                "((->)|(\\.))(\\b\\w*{0}\\b)" },
             { "/ptr", // result left of ->
-                "(?i)(->)(\\b\\w*{0}\\b)" },
+                "(->)(\\b\\w*{0}\\b)" },
             { "/set", // result left of =
-                "(?i)(\\b\\w*{0}\\b)\\s(=)" },
+                "(\\b\\w*{0}\\b)\\s(=)" },
             { "/unset", // result left of ; and not right of =
-                "(?i)([^=]\\s*)(\\b\\w*{0}\\b)\\s*(;)" },
+                "([^=]\\s*)(\\b\\w*{0}\\b)\\s*(;)" },
             { "/new", // new bob
-                "(?i)(new)\\s*(\\b{0}\\b)"
+                "(new)\\s*(\\b{0}\\b)"
             },
             { "/delete", // delete bob
                 "(?i)(delete)\\s*(\\b{0}\\b)"}
@@ -193,6 +193,10 @@ namespace ts
 
             if (searchArgs.QuickMode != null)
             {
+                // append case insensitivity as needed
+                if (!searchArgs.CaseSensitive)
+                    searchArgs.QuickMode = "(?i)" + searchArgs.QuickMode;
+
                 if (searchArgs.QuickMode.Contains("{0}"))
                     searchArgs.SpecialRegex = new Regex(string.Format(searchArgs.QuickMode, searchArgs.Query));
                 else

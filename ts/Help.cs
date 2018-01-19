@@ -64,7 +64,7 @@ namespace ts
             switches.Add("    /3/<num>[b,k,m]/0 = max filesize to search, default: 20mb");
 
             List<string> codeHelpers = new List<string>();
-            codeHelpers.Add("Code Helpers (case insensitive):");
+            codeHelpers.Add("Code Helpers (honors /c flag):");
             //codeHelpers.Add("");
             codeHelpers.Add("    /3/#/0 = line starts with #");
             codeHelpers.Add("        macros #defs and markdown headers");
