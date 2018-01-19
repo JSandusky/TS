@@ -15,11 +15,15 @@ TS also includes rudimentary binary file searching for reverse engineering or id
     
 ![binary mode](binary_mode.png)
 
-# TODO - Missing GREP features
+# TODO
 
-Add `/m` and and `/hit<num>` options:
-
-- `/m` only show matching text, like grep -o
+- Add `/m` only show matching text, like grep -o
     - This is useful when building interop tables, such as grabbing everything that's `VAR_` to get `VAR_FLOAT, VAR_INT, etc`
     - `/mu` *match unique*
-- `/hit<num>` only show `<num>` matches.
+- Add `/hit<num>` only show `<num>` matches.
+- Add support for explicitly named files instead of directories `ts MyFileName.bin /bu16 3338`
+- Add json-query support
+- Add RIFF container searching
+    - Header and structure blocks only really
+- Zip archive searching
+    - Headers and records
