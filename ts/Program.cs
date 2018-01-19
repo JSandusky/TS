@@ -65,7 +65,7 @@ namespace ts
         /// <returns>True if it's been reached</returns>
         public bool CheckHits()
         {
-            return HitLimit > 0 && HitLimit >= DataHitCount;
+            return HitLimit > 0 && DataHitCount >= HitLimit;
         }
 
         /// <summary>

@@ -43,6 +43,7 @@ namespace ts
             switches.Add("        /3/bu32 /bs32 /0= uint, int");
             switches.Add("    /3/c /0= Case-sensitive");
             switches.Add("        default = case-insensitive");
+            switches.Add("    /3/hit<num>/0 = set maximum number of results to output");
             switches.Add("    /3/l /0= show line numbers header (max 99,999)");
             switches.Add("    /3/m/4[u,f,uf] /0= output matches only");
             switches.Add("        /1/mu/0 = unique only, /1/mf/0 = with filename");
