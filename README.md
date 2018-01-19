@@ -1,6 +1,6 @@
 # TS
 
-A windows console text search program similar to grep, but better. Scrolling search results and enough modes to forget about.
+A windows console text search program similar to grep, but better. Scrolling search results and enough modes to forget about. Drop it in C:/Windows or put it on your PATH and just fire away a `ts` in the commandline for help.
 
 ![program help printout](default_help.png)
 
