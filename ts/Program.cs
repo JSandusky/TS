@@ -21,22 +21,25 @@ namespace ts
 
     public class SearchParams
     {
-        // return start index and length
-        public Regex SpecialRegex { get; set; } = null;
-
         public static int KB = 1024;
         public static int MB = 1024 * 1024;
 
+    // Exceptional case regex, a result of formatted a source regex with the query parameter
+        public Regex SpecialRegex { get; set; } = null;
+
+    // Standard settings
+        public int MaxBytes { get; set; } = MB * 20; //default is 20mb limit
+        public string Query { get; set; }
+        public bool CaseSensitive { get; set; } = false;
+
+    // File extension filtering
         public List<string> OnlyExtensions { get; private set; } = new List<string>();
         public List<string> ExcludedExtensions { get; private set; } = new List<string>();
 
+    // /b* binary searching mode setting
         public BinaryMode BinaryMode { get; set; } = BinaryMode.None;
-        public int MaxBytes { get; set; } = (1024 * 1024) * 20; //20mb limit
-        public string Query { get; set; }
-        public bool CaseSensitive { get; set; } = false;
     // Regular expressions
         public bool RegexMode { get; set; } = false;
-        public bool WholeRegex { get; set; } = true;
     // /x /X - xml xPath query
         public bool XmlMode { get; set; } = false;
     // /t /T - `tell mode`
@@ -46,18 +49,20 @@ namespace ts
         public bool MatchOnly { get; set; } = false;
         public bool UniqueOnly { get; set; } = false;
         public bool ShowMatchFileName { get; set; } = false;
-    // General
-        public bool Recurse { get; set; } = false;
-        public int LineCount { get; set; } = 5;
-        public bool Auto { get; set; } = false;
-        public bool ShowLineNumbers { get; set; } = false;
+    // Less important general settings
+        public bool Recurse { get; set; } = false; // Recurse subdirectories, applies to all searches
+        public int LineCount { get; set; } = 5; // Number of lines of text to display in the scrollable viewport, applies to Text/Regex/xPath searches
+        public bool Auto { get; set; } = false; // don't wait for user input
+        public bool ShowLineNumbers { get; set; } = false; // print line numbers, applies to Text/Regex/xPath/Match searches
 
-        public bool wrapInQuote = false;
-        public string quickMode = null;
-
+    // Odd hackish settings
+        public bool WrapInQuote { get; set; } = false; // wrap query text in "" as that's a PITA to do in console parameters
+        public string QuickMode { get; set; } = null;  // Special regex string from the exceptions table
         public int HitLimit { get; set; } = -1; // negative 1 for unlimited
-        public int DataFileCount { get; set; } = 0;
-        public int DataHitCount { get; set; } = 0;
+
+    // Value tracking
+        public int DataFileCount { get; set; } = 0; // Number of files touched
+        public int DataHitCount { get; set; } = 0;  // Number of results matching
 
         /// <summary>
         /// Check if we've hit our maximum allotted hits.
@@ -184,22 +189,22 @@ namespace ts
             if (!searchArgs.CaseSensitive && !searchArgs.RegexMode && needsQueryString)
                 searchArgs.Query = searchArgs.Query.ToLowerInvariant();
             else if (!needsQueryString)
-                searchArgs.Query = searchArgs.quickMode;
+                searchArgs.Query = searchArgs.QuickMode;
 
-            if (searchArgs.quickMode != null)
+            if (searchArgs.QuickMode != null)
             {
-                if (searchArgs.quickMode.Contains("{0}"))
-                    searchArgs.SpecialRegex = new Regex(string.Format(searchArgs.quickMode, searchArgs.Query));
+                if (searchArgs.QuickMode.Contains("{0}"))
+                    searchArgs.SpecialRegex = new Regex(string.Format(searchArgs.QuickMode, searchArgs.Query));
                 else
-                    searchArgs.SpecialRegex = new Regex(searchArgs.quickMode);
-                searchArgs.WholeRegex = true;
+                    searchArgs.SpecialRegex = new Regex(searchArgs.QuickMode);
             }
 
-            if (searchArgs.wrapInQuote)
+            // wrap text in quotes if desired
+            if (searchArgs.WrapInQuote && needsQueryString && searchArgs.SpecialRegex == null)
                 searchArgs.Query = string.Format("\"{0}\"", searchArgs.Query);
 
-            SearchDir searchRoot = new SearchDir();
-
+            // fill search targets
+            SearchDir searchRoot = new SearchDir(); // fake root
             for (int i = 0; i < searchDirs.Count; ++i)
             {
                 if (System.IO.Directory.Exists(searchDirs[i]))
@@ -208,11 +213,12 @@ namespace ts
                     searchRoot.files_.Add(new SearchFile(searchDirs[i]));
             }
 
+            // Launch the appropriate search class instance
             if (searchArgs.MatchOnly)
                 new MatchSearcher(searchArgs, searchRoot);
             else if (searchArgs.BinaryMode != BinaryMode.None)
                 new BinarySearch(searchArgs, searchRoot);
-            else if (searchArgs.RegexMode || searchArgs.quickMode != null) // Regex search must be before `TellSearch` because it has a `TellMode`
+            else if (searchArgs.RegexMode || searchArgs.QuickMode != null) // Regex search must be before `TellSearch` because it has a `TellMode`
                 new RegexSearch(searchArgs, searchRoot);
             else if (searchArgs.XmlMode) // Xml search must be before `TellSearch` because it has a `TellMode`
                 new XmlSearch(searchArgs, searchRoot);
@@ -259,9 +265,7 @@ namespace ts
                     searchArgs.CountFileNames = true;
                 if (lowerCaseArg.Equals("/s"))
                     searchArgs.Recurse = true;
-                if (args[i].Equals("/R"))
-                    searchArgs.WholeRegex = searchArgs.RegexMode = true;
-                if (args[i].Equals("/r"))
+                if (lowerCaseArg.Equals("/r"))
                     searchArgs.RegexMode = true;
                 if (lowerCaseArg.Equals("/x"))
                     searchArgs.XmlMode = true;
@@ -273,7 +277,7 @@ namespace ts
                 if (lowerCaseArg.Equals("/c"))
                     searchArgs.CaseSensitive = true;
                 if (lowerCaseArg.Equals("/str"))
-                    searchArgs.wrapInQuote = true;
+                    searchArgs.WrapInQuote = true;
 
                 // binary search switches
                 if (lowerCaseArg.StartsWith("/b"))
@@ -304,12 +308,12 @@ namespace ts
                 }
 
                 if (SpecialSearches.ContainsKey(lowerCaseArg))
-                    searchArgs.quickMode = SpecialSearches[lowerCaseArg];
+                    searchArgs.QuickMode = SpecialSearches[lowerCaseArg];
                 if (setupData.CustomCommands.ContainsKey(lowerCaseArg))
                 {
                     var customCmd = setupData.CustomCommands[lowerCaseArg];
                     if (!customCmd.IsSwitches)
-                        searchArgs.quickMode = customCmd.Regex;
+                        searchArgs.QuickMode = customCmd.Regex;
                 }
 
                 // deal with extensions and multiple search paths

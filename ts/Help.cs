@@ -60,10 +60,8 @@ namespace ts
             switches.Add("    /3/e /4[list] /0= exclude listed file extensions (without .)");
             switches.Add("        /3/e/0 obj pdb sln");
             switches.Add("    /3/<num>/0 = results display size (default)");
-            switches.Add("        //20");
-            switches.Add("        default: 5");
-            switches.Add("    /3/<num>[b|k|m]/0 = max filesize to search");
-            switches.Add("        default: 20mb");
+            switches.Add("        //20, default: 5");
+            switches.Add("    /3/<num>[b,k,m]/0 = max filesize to search, default: 20mb");
 
             List<string> codeHelpers = new List<string>();
             codeHelpers.Add("Code Helpers (case insensitive):");

@@ -47,7 +47,7 @@ namespace ts
                             PRINT_TEXT:
                                 Console.CursorTop = startTop;
                                 Console.CursorLeft = 0;
-                                drawPoint = FastConsole.WriteResult(lines, i, args.DrawExtra, hitIndex, textLen, vOffset, hOffset, args.ShowLineNumbers, drawPoint, null, args.WholeRegex ? reg : null);
+                                drawPoint = FastConsole.WriteResult(lines, i, args.DrawExtra, hitIndex, textLen, vOffset, hOffset, args.ShowLineNumbers, drawPoint, null, reg);
                                 Console.CursorTop += args.LineCount + 1;
                                 Console.CursorLeft = 0;
 
