@@ -23,7 +23,12 @@ namespace ts
                 string[] text = current.GetSearchText();
 
                 for (int i = 0; i < text.Length; ++i)
-                    count += text[i].Split(new string[] { args.Query }, StringSplitOptions.None).Length - 1;
+                {
+                    if (args.CaseSensitive)
+                        count += text[i].Split(new string[] { args.Query }, StringSplitOptions.None).Length - 1;
+                    else
+                        count += text[i].ToLowerInvariant().Split(new string[] { args.Query }, StringSplitOptions.None).Length - 1;
+                }
 
                 args.DataFileCount += 1;
                 args.DataHitCount += count;
