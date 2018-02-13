@@ -59,10 +59,10 @@ namespace ts
             switches.Add("        /3/o/0 cpp hpp cc h");
             switches.Add("    /3/e /4[list] /0= exclude listed file extensions (without .)");
             switches.Add("        /3/e/0 obj pdb sln");
-            switches.Add("    /3/<num>/0 = results display size (default)");
+            switches.Add("    /3/<num>/0 = results display size");
             switches.Add("        //20, default: 5");
             switches.Add("    /3/<num>[b,k,m]/0 = max filesize to search, default: 20mb");
-            switches.Add("    /3/v = verbose, print scanned filenames");
+            switches.Add("    /3/v/0 = verbose, print scanned filenames");
 
             List<string> codeHelpers = new List<string>();
             codeHelpers.Add("Code Helpers (honors /c flag):");
