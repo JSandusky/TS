@@ -39,7 +39,7 @@ namespace ts
                     countHits.Add(new KeyValuePair<int, string>(count, current.path_));
                 }
                 else if (count > 0)
-                    Console.WriteLine("    " + current.path_);
+                    Console.WriteLine("  " + current.path_);
 
                 if (args.CheckHits())
                     goto SEARCH_END;
@@ -59,7 +59,7 @@ namespace ts
                     return 0;
                 });
                 foreach (var hit in countHits)
-                    Console.WriteLine(string.Format("    {0} -> {1}", hit.Key, hit.Value));
+                    Console.WriteLine(string.Format("  {0,6} -> {1}", hit.Key, hit.Value));
             }
 
         SEARCH_END:

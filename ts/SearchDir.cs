@@ -123,5 +123,16 @@ namespace ts
                 return ret;
             }
         }
+
+        /// <summary>
+        /// Advances the index so that the next call to `GetNext()` will return the first file of the next folder
+        /// </summary>
+        public void SkipCurrentDirectory()
+        {
+            if (index_ >= files_.Count)
+                subDirs_[index_ - files_.Count].SkipCurrentDirectory();
+            else
+                index_ = files_.Count;
+        }
     }
 }

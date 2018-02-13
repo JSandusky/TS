@@ -36,6 +36,9 @@ namespace ts
                     continue;
                 }
 
+                if (args.Verbose)
+                    System.Console.WriteLine(current.path_);
+
                 args.DataFileCount += 1;
 
                 var lines = current.GetSearchText();
@@ -75,6 +78,11 @@ namespace ts
                                     goto PRINT_TEXT;
                                 else if (resCode == ConsoleHelper.INPUT_SKIP)
                                     goto SKIP_TARGET;
+                                else if (resCode == ConsoleHelper.INPUT_SKIPFOLDER)
+                                {
+                                    dir.SkipCurrentDirectory();
+                                    goto SKIP_TARGET;
+                                }
                                 else if (resCode == ConsoleHelper.INPUT_AUTO)
                                     args.Auto = true;
                                 else if (resCode == ConsoleHelper.INPUT_QUIT)

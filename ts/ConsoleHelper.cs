@@ -441,6 +441,7 @@ namespace ts
         public static readonly int INPUT_CONTINUE = 0;  // next result
         public static readonly int INPUT_SKIP = 2;      // skip this file
         public static readonly int INPUT_AUTO = 3;      // activate automatic mode, no input stopping
+        public static readonly int INPUT_SKIPFOLDER = 4;// skip the current folder
 
         /// <summary>
         /// Takes care of input for the search handlers.
@@ -455,7 +456,7 @@ namespace ts
         /// <returns>resulting input code, see values above</returns>
         public static int ProcessInput(string filePath, int totalLines, int lineNumber, int displayLines, int displayPad, ref int hOffset, ref int vOffset)
         {
-            ConsoleHelper.WriteBold("Continue? /Yes /No /Skip /Auto /Edit /Open folder /A/r/r/o/w/s: scroll");
+            ConsoleHelper.WriteBold("Continue? /Yes /No /Skip /Folder-skip /Auto /Edit /Open-folder /A/r/r/o/w/s: scroll");
             ConsoleKeyInfo key = Console.ReadKey();
             int multiplier = key.Modifiers.HasFlag(ConsoleModifiers.Control) ? Math.Max(displayLines, 5) : 1;
 
@@ -533,6 +534,8 @@ namespace ts
             {
                 return INPUT_SKIP;
             }
+            else if (key.Key == ConsoleKey.F)
+                return INPUT_SKIPFOLDER;
             else if (key.Key == ConsoleKey.A)
             {
                 return INPUT_AUTO;
@@ -558,6 +561,7 @@ namespace ts
             ConsoleKey.E, // edit file
             ConsoleKey.O, // open folder
             ConsoleKey.S, // skip file
+            ConsoleKey.F, // skip folder
             ConsoleKey.A, // go automatic
         };
     }

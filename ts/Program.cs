@@ -29,6 +29,7 @@ namespace ts
 
     // Standard settings
         public int MaxBytes { get; set; } = MB * 20; //default is 20mb limit
+        public List<string> Queries { get; private set; } = new List<string>();
         public string Query { get; set; }
         public bool CaseSensitive { get; set; } = false;
 
@@ -54,6 +55,7 @@ namespace ts
         public int LineCount { get; set; } = 5; // Number of lines of text to display in the scrollable viewport, applies to Text/Regex/xPath searches
         public bool Auto { get; set; } = false; // don't wait for user input
         public bool ShowLineNumbers { get; set; } = false; // print line numbers, applies to Text/Regex/xPath/Match searches
+        public bool Verbose { get; set; } = false;
 
     // Odd hackish settings
         public bool WrapInQuote { get; set; } = false; // wrap query text in "" as that's a PITA to do in console parameters
@@ -282,6 +284,8 @@ namespace ts
                     searchArgs.CaseSensitive = true;
                 if (lowerCaseArg.Equals("/str"))
                     searchArgs.WrapInQuote = true;
+                if (lowerCaseArg.Equals("/v"))
+                    searchArgs.Verbose = true;
 
                 // binary search switches
                 if (lowerCaseArg.StartsWith("/b"))

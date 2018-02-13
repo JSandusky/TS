@@ -18,6 +18,9 @@ namespace ts
             var current = dir.GetNext();
             while (current != null)
             {
+                if (args.Verbose)
+                    System.Console.WriteLine(current.path_);
+
                 string[] lines = current.GetSearchText();
                 args.DataFileCount += 1;
 
@@ -53,6 +56,11 @@ namespace ts
                                     goto PRINT_TEXT;
                                 else if (res == ConsoleHelper.INPUT_SKIP)
                                     goto SKIP_TARGET;
+                                else if (res == ConsoleHelper.INPUT_SKIPFOLDER)
+                                {
+                                    dir.SkipCurrentDirectory();
+                                    goto SKIP_TARGET;
+                                }
                                 else if (res == ConsoleHelper.INPUT_AUTO)
                                     args.Auto = true;
                                 else if (res == ConsoleHelper.INPUT_QUIT)

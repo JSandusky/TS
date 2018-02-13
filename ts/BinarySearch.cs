@@ -41,6 +41,9 @@ namespace ts
             bool pausePeriodically = true;
             while (current != null)
             {
+                if (args.Verbose)
+                    Console.WriteLine(current.path_);
+
                 Console.WriteLine();
                 Console.WriteLine("    " + current.path_);
                 Console.WriteLine();
@@ -164,7 +167,7 @@ namespace ts
                             {
                                 Console.BackgroundColor = ConsoleColor.Black;
                                 Console.WriteLine();
-                                ConsoleHelper.WriteBold("Continue? /Yes /No /Auto /Skip");
+                                ConsoleHelper.WriteBold("Continue? /Yes /No /Auto /Skip /Folder-skip");
 
                             INPUT_BLOCK:
                                 ConsoleKeyInfo key = Console.ReadKey();
@@ -183,6 +186,11 @@ namespace ts
                                 }
                                 else if (key.Key == ConsoleKey.S)
                                 {
+                                    goto SKIP_TARGET;
+                                }
+                                else if (key.Key == ConsoleKey.F)
+                                {
+                                    dir.SkipCurrentDirectory();
                                     goto SKIP_TARGET;
                                 }
                                 else if (key.Key == ConsoleKey.Y || key.Key == ConsoleKey.Enter)

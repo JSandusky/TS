@@ -62,6 +62,7 @@ namespace ts
             switches.Add("    /3/<num>/0 = results display size (default)");
             switches.Add("        //20, default: 5");
             switches.Add("    /3/<num>[b,k,m]/0 = max filesize to search, default: 20mb");
+            switches.Add("    /3/v = verbose, print scanned filenames");
 
             List<string> codeHelpers = new List<string>();
             codeHelpers.Add("Code Helpers (honors /c flag):");

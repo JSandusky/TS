@@ -18,6 +18,10 @@ namespace ts
             var current = dir.GetNext();
             while (current != null)
             {
+                // Print scanned file, but not if in tell mode
+                if (args.Verbose && !args.FileNamesOnly)
+                    System.Console.WriteLine(current.path_);
+
                 string[] lines = current.GetSearchText();
                 args.DataFileCount += 1;
                 int thisFileHits = 0;
@@ -58,6 +62,11 @@ namespace ts
                                         goto PRINT_TEXT;
                                     else if (res == ConsoleHelper.INPUT_SKIP)
                                         goto SKIP_TARGET;
+                                    else if (res == ConsoleHelper.INPUT_SKIPFOLDER)
+                                    {
+                                        dir.SkipCurrentDirectory();
+                                        goto SKIP_TARGET;
+                                    }
                                     else if (res == ConsoleHelper.INPUT_AUTO)
                                         args.Auto = true;
                                     else if (res == ConsoleHelper.INPUT_QUIT)
