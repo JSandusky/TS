@@ -563,6 +563,7 @@ namespace ts
             ConsoleKey.S, // skip file
             ConsoleKey.F, // skip folder
             ConsoleKey.A, // go automatic
+            ConsoleKey.C, // Copy
         };
     }
 }

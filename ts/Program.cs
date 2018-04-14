@@ -45,6 +45,7 @@ namespace ts
         public bool XmlMode { get; set; } = false;
     // /t /T - `tell mode`
         public bool FileNamesOnly { get; set; } = false;
+        public bool NotMode { get; set; } = false;
         public bool CountFileNames { get; set; } = false;
     // `match` mode
         public bool MatchOnly { get; set; } = false;
@@ -275,7 +276,8 @@ namespace ts
                     searchArgs.RegexMode = true;
                 if (lowerCaseArg.Equals("/x"))
                     searchArgs.XmlMode = true;
-
+                if (lowerCaseArg.Equals("/not"))
+                    searchArgs.NotMode = searchArgs.FileNamesOnly = true;
                 if (lowerCaseArg.Equals("/a"))
                     searchArgs.Auto = true;
                 if (lowerCaseArg.Equals("/l"))

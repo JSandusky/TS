@@ -53,6 +53,7 @@ namespace ts
             switches.Add("    /3/str /0= wrap search text in double-quote \"");
             switches.Add("    /3/t /0= only filenames, no results display");
             switches.Add("    /3/T /0= only filenames with count of hits");
+            switches.Add("    /3/not /0= only file names where result is not found");
             switches.Add("    /3/x /0= XML xPath query mode");
             switches.Add("        query text is interpreted as an xPath expression");
             switches.Add("    /3/o /4[list] /0= only listed file extensions (without .)");

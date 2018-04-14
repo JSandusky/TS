@@ -10,7 +10,12 @@ namespace ts
     {
         public TellSearch(SearchParams args, SearchDir dir)
         {
-            Console.WriteLine(string.Format("\r\nTell search mode: \"{0}\"\r\n", args.Query));
+            if (args.CountFileNames)
+                Console.WriteLine(string.Format("\r\nCount search mode: \"{0}\"\r\n", args.Query));
+            else if (args.NotMode)
+                Console.WriteLine(string.Format("\r\nNot Found search mode: \"{0}\"\r\n", args.Query));
+            else
+                Console.WriteLine(string.Format("\r\nTell search mode: \"{0}\"\r\n", args.Query));
 
             List<KeyValuePair<int, string>> countHits = new List<KeyValuePair<int, string>>();
 
@@ -34,11 +39,13 @@ namespace ts
                 args.DataHitCount += count;
                 current.hadHit_ = count > 0 ? true : false;
 
-                if (count > 0 && args.CountFileNames)
+                if (count > 0 && args.CountFileNames && !args.NotMode)
                 {
                     countHits.Add(new KeyValuePair<int, string>(count, current.path_));
                 }
-                else if (count > 0)
+                else if (count > 0 && !args.NotMode)
+                    Console.WriteLine("  " + current.path_);
+                else if (count == 0 && args.NotMode)
                     Console.WriteLine("  " + current.path_);
 
                 if (args.CheckHits())
